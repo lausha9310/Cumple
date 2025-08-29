@@ -1,0 +1,286 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #0a0a1a;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+.container {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.animation-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    margin-bottom: 50px;
+}
+
+.cake {
+    position: relative;
+    width: 300px; /* Aumentado de 200px a 280px para más espacio */
+    height: 120px;
+    opacity: 0;
+    margin: 0 auto;
+}
+
+.cake-bottom {
+    width: 300px; /* Aumentado de 200px a 280px */
+    height: 80px;
+    background-color: #f9c7c7;
+    border-radius: 10px 10px 0 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border: 3px solid transparent;
+    box-shadow: 
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 15px #ff00ff,
+        0 0 20px #ff00ff,
+        0 0 25px #ff00ff;
+}
+
+.cake-top {
+    width: 340px; /* Aumentado de 220px a 300px */
+    height: 40px;
+    background-color: #ff9d9d;
+    border-radius: 10px;
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    border: 3px solid transparent;
+    box-shadow: 
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 15px #00ffff,
+        0 0 20px #00ffff,
+        0 0 25px #00ffff;
+}
+
+.countdown {
+    font-size: 48px;
+    color: #fff;
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 1s;
+    text-shadow: 
+        0 0 5px #fff,
+        0 0 10px #00ff00,
+        0 0 15px #00ff00;
+}
+
+.message-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 25;
+}
+
+.message {
+    font-size: 36px;
+    color: #ff4081;
+    opacity: 0;
+    transition: opacity 2s;
+    text-shadow: 
+        0 0 5px #fff,
+        0 0 10px #ff4081,
+        0 0 15px #ff4081,
+        0 0 20px #ff4081;
+    z-index: 30;
+    position: relative;
+}
+
+.confetti {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    opacity: 0;
+    border-radius: 50%;
+    z-index: 20;
+}
+
+@keyframes explode {
+    0% { 
+        transform: translate(0, 0) rotate(0deg) scale(1); 
+        opacity: 1; 
+    }
+    50% {
+        transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(1.2);
+        opacity: 0.8;
+    }
+    100% { 
+        transform: translate(var(--tx), var(--ty)) rotate(var(--r)) scale(0.5); 
+        opacity: 0; 
+    }
+}
+
+@keyframes drawCake {
+    0% {
+        stroke-dashoffset: 1000;
+        opacity: 1;
+    }
+    100% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+    }
+}
+
+.neon-path {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 3;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawCake 5s ease-in-out forwards;
+    filter: 
+        drop-shadow(0 0 2px #fff)
+        drop-shadow(0 0 5px #ff00ff)
+        drop-shadow(0 0 10px #ff00ff);
+}
+
+/* Animación de caída y rebote para velas */
+@keyframes candleFall {
+    0% {
+        transform: translateY(-100px) rotate(-5deg);
+        opacity: 0;
+    }
+    30% {
+        transform: translateY(20px) rotate(2deg);
+        opacity: 1;
+    }
+    45% {
+        transform: translateY(-10px) rotate(-1deg);
+    }
+    60% {
+        transform: translateY(5px) rotate(0.5deg);
+    }
+    75% {
+        transform: translateY(-2px) rotate(0deg);
+    }
+    90% {
+        transform: translateY(1px) rotate(0deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* Animación para la llama que aparece después */
+@keyframes flameAppear {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes flicker {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.1); opacity: 1; }
+}
+
+/* ESTILOS ACTUALIZADOS PARA VELAS Y LLAMAS */
+.candle {
+    width: 10px;
+    height: 40px;
+    background-color: #fff;
+    position: absolute;
+    top: -50px;
+    border-radius: 5px;
+    opacity: 0;
+    transform-origin: center bottom;
+    box-shadow: 
+        0 0 5px #fff,
+        0 0 10px #ff9800,
+        0 0 15px #ff9800;
+    /* Se removió transition: opacity 1s; porque ahora usamos animaciones */
+}
+
+.flame {
+    width: 15px;
+    height: 25px;
+    background: radial-gradient(ellipse at center, #ffeb3b 0%, #ff9800 70%, #ff5722 100%);
+    border-radius: 50% 50% 20% 20%;
+    position: absolute;
+    top: -25px;
+    left: -2.5px;
+    opacity: 0;
+    transform-origin: center bottom;
+    box-shadow: 
+        0 0 10px #ffeb3b,
+        0 0 20px #ff9800,
+        0 0 30px #ff5722;
+    /* Se removió animation y transition porque se aplicarán dinámicamente */
+}
+
+.restart-btn {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    font-size: 18px;
+    background: linear-gradient(45deg, #ff00ff, #00ffff);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 0 10px #ff00ff,
+        0 0 20px #00ffff,
+        0 0 30px rgba(255, 0, 255, 0.5);
+    z-index: 40;
+}
+
+.restart-btn:hover {
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 
+        0 0 15px #ff00ff,
+        0 0 30px #00ffff,
+        0 0 45px rgba(255, 0, 255, 0.7);
+}
+
+.restart-btn:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
+/* SVG de dibujado centrado */
+.neon-svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
