@@ -1,3 +1,4 @@
+/* === ESTILOS ORIGINALES (SIN MODIFICAR) === */
 body {
     margin: 0;
     padding: 0;
@@ -19,6 +20,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    display: none; /* Oculto inicialmente */
 }
 
 .animation-container {
@@ -27,20 +29,22 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 300px;
+    height: 800px;
     margin-bottom: 50px;
 }
 
 .cake {
     position: relative;
-    width: 300px; /* Aumentado de 200px a 280px para más espacio */
+    width: 280px; /* Ajustado para móviles */
     height: 120px;
     opacity: 0;
     margin: 0 auto;
+    left: 0;
+    right: 0;
 }
 
 .cake-bottom {
-    width: 300px; /* Aumentado de 200px a 280px */
+    width: 300px;
     height: 80px;
     background-color: #f9c7c7;
     border-radius: 10px 10px 0 0;
@@ -57,7 +61,7 @@ body {
 }
 
 .cake-top {
-    width: 340px; /* Aumentado de 220px a 300px */
+    width: 340px;
     height: 40px;
     background-color: #ff9d9d;
     border-radius: 10px;
@@ -223,7 +227,6 @@ body {
         0 0 5px #fff,
         0 0 10px #ff9800,
         0 0 15px #ff9800;
-    /* Se removió transition: opacity 1s; porque ahora usamos animaciones */
 }
 
 .flame {
@@ -240,7 +243,6 @@ body {
         0 0 10px #ffeb3b,
         0 0 20px #ff9800,
         0 0 30px #ff5722;
-    /* Se removió animation y transition porque se aplicarán dinámicamente */
 }
 
 .restart-btn {
@@ -283,4 +285,92 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
+}
+
+/* === ESTILOS PARA LA PANTALLA DE INICIO === */
+#start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+    transition: opacity 1s ease;
+}
+
+.title {
+    font-size: 3.5em;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 0 0 15px rgba(255, 107, 107, 0.7);
+    animation: pulse 2s infinite;
+}
+
+.subtitle {
+    font-size: 1.5em;
+    margin-bottom: 40px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+#start-btn {
+    padding: 20px 50px;
+    font-size: 1.5em;
+    background: linear-gradient(to right, #ff6b6b, #ff8e53);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#start-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(255, 107, 107, 0.7);
+}
+
+#start-btn:active {
+    transform: scale(0.98);
+}
+
+.floating-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.floating-element {
+    position: absolute;
+    font-size: 2em;
+    opacity: 0.3;
+    animation: float 6s infinite ease-in-out;
+}
+
+.instructions {
+    position: absolute;
+    bottom: 30px;
+    text-align: center;
+    opacity: 0.6;
+    font-size: 1em;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(10deg); }
+    100% { transform: translateY(0) rotate(0deg); }
 }
