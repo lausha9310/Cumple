@@ -115,7 +115,8 @@ function createCandles() {
     existingCandles.forEach(candle => candle.remove());
     
     const totalCandles = 11;
-    const cakeWidth = 300;
+    const cake = document.querySelector('.cake');
+    const cakeWidth = cake.offsetWidth; // Usar el ancho real del pastel
     const candleWidth = 10;
     
     // Calcular el espacio total que ocuparán las velas
@@ -124,7 +125,7 @@ function createCandles() {
     // Calcular el espacio sobrante para distribuir
     const remainingSpace = cakeWidth - totalCandlesWidth;
     
-    // Calcular el espacio entre velas (incluyendo los bordes)
+    // Calcular el espacio entre velas
     const spacing = remainingSpace / (totalCandles + 1);
     
     for (let i = 0; i < totalCandles; i++) {
