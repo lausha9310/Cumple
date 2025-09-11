@@ -7,10 +7,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Configurar el botón de inicio
     startBtn.addEventListener('click', function() {
-        // Reproducir música
-        birthdayAudio.play().catch(error => {
-            console.log("Reproducción automática bloqueada:", error);
-        });
+        // Intentar reproducir audio
+        const playAudio = () => {
+            birthdayAudio.play()
+                .then(() => {
+                    console.log("Audio reproducido correctamente");
+                })
+                .catch(error => {
+                    console.log("Error al reproducir audio:", error);
+                    showAudioButton();
+                });
+        };
+        
+        // Intentar reproducir después de un breve retraso
+        setTimeout(playAudio, 100);
         
         // Ocultar pantalla de inicio con efecto de desvanecimiento
         startScreen.style.opacity = '0';
@@ -18,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Después de la transición, ocultar completamente y mostrar la animación
         setTimeout(function() {
             startScreen.style.display = 'none';
-            container.style.display = 'block';
+            container.style.display = 'flex';
             
             // Iniciar la animación del pastel
             startAnimation();
@@ -41,14 +51,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ===== CÓDIGO ORIGINAL DE LA ANIMACIÓN (SIN MODIFICAR) =====
-const cake = document.querySelector('.cake');
-const countdown = document.getElementById('countdown');
-const message = document.getElementById('message');
-const restartBtn = document.getElementById('restartBtn');
-const container = document.querySelector('.container');
-const animationContainer = document.querySelector('.animation-container');
+// Función para mostrar botón de activación de audio
+function showAudioButton() {
+    const audioButton = document.createElement('button');
+    audioButton.textContent = '🔊 Activar Audio';
+    audioButton.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        background: #ff6b6b;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        z-index: 1001;
+        font-size: 16px;
+    `;
+    
+    audioButton.addEventListener('click', function() {
+        document.getElementById('birthdayAudio').play()
+            .then(() => audioButton.remove())
+            .catch(error => console.log("Error al activar audio:", error));
+    });
+    
+    document.body.appendChild(audioButton);
+}
 
+// ===== CÓDIGO DE LA ANIMACIÓN DEL PASTEL =====
 let confettiInterval;
 let isExploded = false;
 
@@ -59,12 +89,14 @@ function startAnimation() {
 }
 
 // Event listener para el botón de reinicio
-restartBtn.addEventListener('click', function() {
+document.getElementById('restartBtn').addEventListener('click', function() {
     resetAnimation();
     startAnimation();
 });
 
 function createNeonDrawing() {
+    const animationContainer = document.querySelector('.animation-container');
+    
     // Crear SVG para el efecto de dibujado
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("width", "320");
@@ -91,7 +123,7 @@ function createNeonDrawing() {
     
     // Mostrar el pastel real después de que termine la animación de dibujado
     setTimeout(() => {
-        cake.style.opacity = "1";
+        document.querySelector('.cake').style.opacity = "1";
         svg.style.opacity = "0";
         
         // Crear 11 velas
@@ -110,13 +142,14 @@ function createNeonDrawing() {
 }
 
 function createCandles() {
+    const cake = document.querySelector('.cake');
+    
     // Limpiar velas existentes
     const existingCandles = document.querySelectorAll('.candle');
     existingCandles.forEach(candle => candle.remove());
     
     const totalCandles = 11;
-    const cake = document.querySelector('.cake');
-    const cakeWidth = cake.offsetWidth; // Usar el ancho real del pastel
+    const cakeWidth = cake.offsetWidth;
     const candleWidth = 10;
     
     // Calcular el espacio total que ocuparán las velas
@@ -169,6 +202,7 @@ function startCandleAnimation() {
 }
 
 function startCountdown() {
+    const countdown = document.getElementById('countdown');
     countdown.style.opacity = '1';
     
     let seconds = 5;
@@ -185,6 +219,11 @@ function startCountdown() {
 }
 
 function explodeCake() {
+    const cake = document.querySelector('.cake');
+    const countdown = document.getElementById('countdown');
+    const message = document.getElementById('message');
+    const restartBtn = document.getElementById('restartBtn');
+    
     isExploded = true;
     
     // Ocultar pastel y cuenta regresiva
@@ -206,63 +245,71 @@ function explodeCake() {
 }
 
 function startContinuousConfetti() {
+    const message = document.getElementById('message');
+    const container = document.querySelector('.container');
+    
     // Crear confeti inicial
     createConfetti();
     
     // Continuar creando confeti cada 500ms
     confettiInterval = setInterval(createConfetti, 500);
-}
-
-function createConfetti() {
-    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
-    const messageRect = message.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
     
-    // Calcular posición alrededor del mensaje
-    const messageX = messageRect.left - containerRect.left + messageRect.width / 2;
-    const messageY = messageRect.top - containerRect.top + messageRect.height / 2;
-    
-    for (let i = 0; i < 20; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti';
-        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    function createConfetti() {
+        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+        const messageRect = message.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
         
-        // Posicionar alrededor del mensaje
-        const angle = Math.random() * Math.PI * 2;
-        const distance = 100 + Math.random() * 50;
-        const x = messageX + Math.cos(angle) * distance;
-        const y = messageY + Math.sin(angle) * distance;
+        // Calcular posición alrededor del mensaje
+        const messageX = messageRect.left - containerRect.left + messageRect.width / 2;
+        const messageY = messageRect.top - containerRect.top + messageRect.height / 2;
         
-        confetti.style.left = `${x}px`;
-        confetti.style.top = `${y}px`;
-        
-        // Efecto neón para el confeti
-        confetti.style.boxShadow = `0 0 5px ${confetti.style.backgroundColor}, 0 0 10px ${confetti.style.backgroundColor}`;
-        
-        // Propiedades aleatorias para la animación
-        const tx = (Math.random() - 0.5) * 200;
-        const ty = (Math.random() - 0.5) * 200 - 100;
-        const r = Math.random() * 360;
-        
-        confetti.style.setProperty('--tx', `${tx}px`);
-        confetti.style.setProperty('--ty', `${ty}px`);
-        confetti.style.setProperty('--r', `${r}deg`);
-        
-        confetti.style.animation = `explode ${Math.random() * 1.5 + 1}s forwards`;
-        confetti.style.opacity = '1';
-        
-        container.appendChild(confetti);
-        
-        // Eliminar el confeti después de la animación
-        setTimeout(() => {
-            if (confetti.parentNode) {
-                confetti.remove();
-            }
-        }, 3000);
+        for (let i = 0; i < 20; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Posicionar alrededor del mensaje
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 100 + Math.random() * 50;
+            const x = messageX + Math.cos(angle) * distance;
+            const y = messageY + Math.sin(angle) * distance;
+            
+            confetti.style.left = `${x}px`;
+            confetti.style.top = `${y}px`;
+            
+            // Efecto neón para el confeti
+            confetti.style.boxShadow = `0 0 5px ${confetti.style.backgroundColor}, 0 0 10px ${confetti.style.backgroundColor}`;
+            
+            // Propiedades aleatorias para la animación
+            const tx = (Math.random() - 0.5) * 200;
+            const ty = (Math.random() - 0.5) * 200 - 100;
+            const r = Math.random() * 360;
+            
+            confetti.style.setProperty('--tx', `${tx}px`);
+            confetti.style.setProperty('--ty', `${ty}px`);
+            confetti.style.setProperty('--r', `${r}deg`);
+            
+            confetti.style.animation = `explode ${Math.random() * 1.5 + 1}s forwards`;
+            confetti.style.opacity = '1';
+            
+            container.appendChild(confetti);
+            
+            // Eliminar el confeti después de la animación
+            setTimeout(() => {
+                if (confetti.parentNode) {
+                    confetti.remove();
+                }
+            }, 3000);
+        }
     }
 }
 
 function resetAnimation() {
+    const cake = document.querySelector('.cake');
+    const countdown = document.getElementById('countdown');
+    const message = document.getElementById('message');
+    const restartBtn = document.getElementById('restartBtn');
+    
     // Detener confeti continuo
     if (confettiInterval) {
         clearInterval(confettiInterval);
