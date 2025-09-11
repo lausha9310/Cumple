@@ -1,3 +1,14 @@
+:root {
+    --primary-bg: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+    --cake-bottom-color: #f9c7c7;
+    --cake-top-color: #ff9d9d;
+    --neon-pink: #ff00ff;
+    --neon-cyan: #00ffff;
+    --neon-orange: #ff9800;
+    --message-color: #ff4081;
+    --btn-gradient: linear-gradient(to right, #ff6b6b, #ff8e53);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +23,7 @@ html, body {
 
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+    background: var(--primary-bg);
     color: white;
     min-height: 100vh;
     display: flex;
@@ -28,14 +39,13 @@ body {
     width: 100%;
     max-width: 100vw;
     height: 100%;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    display: none;
 }
 
-/* ANIMACIÓN DEL PASTEL */
+/* ANIMACIÓN DEL PASTEL - CENTRADO CORREGIDO */
 .animation-container {
     position: relative;
     display: flex;
@@ -59,7 +69,7 @@ body {
 .cake-bottom {
     width: 280px;
     height: 80px;
-    background-color: #f9c7c7;
+    background-color: var(--cake-bottom-color);
     border-radius: 10px 10px 0 0;
     position: absolute;
     bottom: 0;
@@ -69,15 +79,15 @@ body {
     box-shadow: 
         0 0 5px #fff,
         0 0 10px #fff,
-        0 0 15px #ff00ff,
-        0 0 20px #ff00ff,
-        0 0 25px #ff00ff;
+        0 0 15px var(--neon-pink),
+        0 0 20px var(--neon-pink),
+        0 0 25px var(--neon-pink);
 }
 
 .cake-top {
     width: 320px;
     height: 40px;
-    background-color: #ff9d9d;
+    background-color: var(--cake-top-color);
     border-radius: 10px;
     position: absolute;
     top: -20px;
@@ -87,9 +97,41 @@ body {
     box-shadow: 
         0 0 5px #fff,
         0 0 10px #fff,
-        0 0 15px #00ffff,
-        0 0 20px #00ffff,
-        0 0 25px #00ffff;
+        0 0 15px var(--neon-cyan),
+        0 0 20px var(--neon-cyan),
+        0 0 25px var(--neon-cyan);
+}
+
+/* VELAS Y LLAMAS - CENTRADO CORREGIDO */
+.candle {
+    width: 10px;
+    height: 40px;
+    background-color: #fff;
+    position: absolute;
+    top: -50px;
+    border-radius: 5px;
+    opacity: 0;
+    transform-origin: center bottom;
+    box-shadow: 
+        0 0 5px #fff,
+        0 0 10px var(--neon-orange),
+        0 0 15px var(--neon-orange);
+}
+
+.flame {
+    width: 15px;
+    height: 25px;
+    background: radial-gradient(ellipse at center, #ffeb3b 0%, var(--neon-orange) 70%, #ff5722 100%);
+    border-radius: 50% 50% 20% 20%;
+    position: absolute;
+    top: -25px;
+    left: -2.5px;
+    opacity: 0;
+    transform-origin: center bottom;
+    box-shadow: 
+        0 0 10px #ffeb3b,
+        0 0 20px var(--neon-orange),
+        0 0 30px #ff5722;
 }
 
 .countdown {
@@ -120,14 +162,14 @@ body {
 
 .message {
     font-size: 24px;
-    color: #ff4081;
+    color: var(--message-color);
     opacity: 0;
     transition: opacity 2s;
     text-shadow: 
         0 0 5px #fff,
-        0 0 10px #ff4081,
-        0 0 15px #ff4081,
-        0 0 20px #ff4081;
+        0 0 10px var(--message-color),
+        0 0 15px var(--message-color),
+        0 0 20px var(--message-color);
     z-index: 30;
     position: relative;
     max-width: 100%;
@@ -142,7 +184,7 @@ body {
 .restart-btn {
     padding: 12px 24px;
     font-size: 16px;
-    background: linear-gradient(45deg, #ff00ff, #00ffff);
+    background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan));
     color: white;
     border: none;
     border-radius: 25px;
@@ -150,8 +192,8 @@ body {
     opacity: 0;
     transition: all 0.3s ease;
     box-shadow: 
-        0 0 10px #ff00ff,
-        0 0 20px #00ffff,
+        0 0 10px var(--neon-pink),
+        0 0 20px var(--neon-cyan),
         0 0 30px rgba(255, 0, 255, 0.5);
     margin-top: 20px;
 }
@@ -159,9 +201,65 @@ body {
 .restart-btn:hover {
     transform: scale(1.05);
     box-shadow: 
-        0 0 15px #ff00ff,
-        0 0 30px #00ffff,
+        0 0 15px var(--neon-pink),
+        0 0 30px var(--neon-cyan),
         0 0 45px rgba(255, 0, 255, 0.7);
+}
+
+/* PANTALLA DE INICIO */
+#start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background: var(--primary-bg);
+    transition: opacity 1s ease;
+    padding: 20px;
+}
+
+.title {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 0 0 15px rgba(255, 107, 107, 0.7);
+    animation: pulse 2s infinite;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    margin-bottom: 40px;
+    text-align: center;
+    opacity: 0.8;
+    padding: 0 15px;
+}
+
+#start-btn {
+    padding: 15px 40px;
+    font-size: 1.2em;
+    background: var(--btn-gradient);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#start-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(255, 107, 107, 0.7);
+}
+
+#start-btn:active {
+    transform: scale(0.98);
 }
 
 /* CONFETI */
@@ -172,6 +270,39 @@ body {
     opacity: 0;
     border-radius: 50%;
     z-index: 20;
+}
+
+/* SVG de dibujado centrado */
+.neon-svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+.floating-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.floating-element {
+    position: absolute;
+    font-size: 1.5em;
+    opacity: 0.3;
+    animation: float 6s infinite ease-in-out;
+}
+
+.instructions {
+    position: absolute;
+    bottom: 30px;
+    text-align: center;
+    opacity: 0.6;
+    font-size: 0.9em;
+    padding: 0 15px;
+    width: 100%;
 }
 
 /* ANIMACIONES */
@@ -210,8 +341,8 @@ body {
     animation: drawCake 5s ease-in-out forwards;
     filter: 
         drop-shadow(0 0 2px #fff)
-        drop-shadow(0 0 5px #ff00ff)
-        drop-shadow(0 0 10px #ff00ff);
+        drop-shadow(0 0 5px var(--neon-pink))
+        drop-shadow(0 0 10px var(--neon-pink));
 }
 
 /* Animación de caída y rebote para velas */
@@ -263,129 +394,6 @@ body {
     100% { transform: scale(1.1); opacity: 1; }
 }
 
-/* VELAS Y LLAMAS */
-.candle {
-    width: 10px;
-    height: 40px;
-    background-color: #fff;
-    position: absolute;
-    top: -50px;
-    border-radius: 5px;
-    opacity: 0;
-    transform-origin: center bottom;
-    box-shadow: 
-        0 0 5px #fff,
-        0 0 10px #ff9800,
-        0 0 15px #ff9800;
-    transform: translateX(-50%);
-}
-
-.flame {
-    width: 15px;
-    height: 25px;
-    background: radial-gradient(ellipse at center, #ffeb3b 0%, #ff9800 70%, #ff5722 100%);
-    border-radius: 50% 50% 20% 20%;
-    position: absolute;
-    top: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transform-origin: center bottom;
-    box-shadow: 
-        0 0 10px #ffeb3b,
-        0 0 20px #ff9800,
-        0 0 30px #ff5722;
-}
-
-/* SVG de dibujado centrado */
-.neon-svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-}
-
-/* PANTALLA DE INICIO */
-#start-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
-    transition: opacity 1s ease;
-    padding: 20px;
-}
-
-.title {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-    text-align: center;
-    text-shadow: 0 0 15px rgba(255, 107, 107, 0.7);
-    animation: pulse 2s infinite;
-}
-
-.subtitle {
-    font-size: 1.2em;
-    margin-bottom: 40px;
-    text-align: center;
-    opacity: 0.8;
-    padding: 0 15px;
-}
-
-#start-btn {
-    padding: 15px 40px;
-    font-size: 1.2em;
-    background: linear-gradient(to right, #ff6b6b, #ff8e53);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-
-#start-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 30px rgba(255, 107, 107, 0.7);
-}
-
-#start-btn:active {
-    transform: scale(0.98);
-}
-
-.floating-elements {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.floating-element {
-    position: absolute;
-    font-size: 1.5em;
-    opacity: 0.3;
-    animation: float 6s infinite ease-in-out;
-}
-
-.instructions {
-    position: absolute;
-    bottom: 30px;
-    text-align: center;
-    opacity: 0.6;
-    font-size: 0.9em;
-    padding: 0 15px;
-    width: 100%;
-}
-
 @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
@@ -401,7 +409,7 @@ body {
 /* MEDIA QUERIES PARA RESPONSIVIDAD */
 @media (max-width: 480px) {
     .cake {
-        width: 240px;
+        width: 280px;
         height: 100px;
     }
     
